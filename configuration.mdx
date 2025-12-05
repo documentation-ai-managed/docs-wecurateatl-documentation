@@ -1,0 +1,151 @@
+---
+title: Configuration
+description: Configure Wecurateatl settings to customize your documentation workspace and workflows
+---
+
+## Configuration Basics
+
+Configuring Wecurateatl allows you to tailor the platform to your team's needs and workflows. From project settings to user preferences, you can customize everything from themes to notification preferences. Proper configuration ensures your documentation environment is efficient and aligned with your organizational requirements.
+
+<Columns cols={2}>
+  <Card title="Project Settings" icon="settings" href="#project-config">
+    Configure project-level options like themes, permissions, and integrations.
+  </Card>
+  <Card title="User Preferences" icon="user" href="#user-config">
+    Personalize your experience with notification settings and interface options.
+  </Card>
+</Columns>
+
+## Project Configuration
+
+Project settings affect how your documentation is organized and accessed. You can configure themes, access controls, and integration options.
+
+<Tabs>
+  <Tab title="General Settings" icon="settings">
+    Set project name, description, and visibility options.
+    
+    ```json
+    {
+      "name": "My Documentation Project",
+      "description": "Team documentation for project X",
+      "visibility": "private",
+      "theme": "light"
+    }
+    ```
+  </Tab>
+  <Tab title="Access Control" icon="lock">
+    Manage who can access your project and what they can do.
+    
+    | Setting | Description |
+    |---------|-------------|
+    | Public Access | Allow anyone to view published docs |
+    | Team Only | Restrict to invited team members |
+    | Password Protected | Require password for access |
+  </Tab>
+  <Tab title="Integrations" icon="plug">
+    Connect external tools and services.
+    
+    <Steps>
+      <Step title="Add Integration" icon="plus">
+        Choose from available integrations like Slack, GitHub, or webhooks.
+      </Step>
+      <Step title="Configure Settings" icon="settings">
+        Enter API keys and configure webhook URLs.
+      </Step>
+      <Step title="Test Connection" icon="check">
+        Verify the integration is working correctly.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+<Callout kind="tip">Use environment-specific configurations to maintain different settings for development, staging, and production.</Callout>
+
+## User Preferences
+
+Customize your personal experience within Wecurateatl. These settings affect your interface and notification preferences.
+
+<Expandable title="Notification Settings" default-open="false">
+  Choose how and when you receive notifications about documentation changes.
+  
+  - Email notifications for new comments
+  - Slack notifications for published updates
+  - In-app notifications for team mentions
+</Expandable>
+
+<Expandable title="Interface Options" default-open="false">
+  Customize the look and feel of the Wecurateatl interface.
+  
+  - Theme selection (light/dark/auto)
+  - Editor preferences (markdown preview, syntax highlighting)
+  - Dashboard layout (compact/expanded)
+</Expandable>
+
+## Advanced Configuration
+
+For power users, Wecurateatl offers advanced configuration options including custom domains, API rate limits, and custom CSS.
+
+<CodeGroup tabs="JSON,YAML">
+  ```json
+  {
+    "advanced": {
+      "customDomain": "docs.example.com",
+      "rateLimit": 1000,
+      "customCSS": "body { font-family: 'Arial'; }",
+      "webhooks": [
+        {
+          "url": "https://example.com/webhook",
+          "events": ["document.published", "version.created"]
+        }
+      ]
+    }
+  }
+  ```
+  ```yaml
+  advanced:
+    customDomain: docs.example.com
+    rateLimit: 1000
+    customCSS: "body { font-family: 'Arial'; }"
+    webhooks:
+      - url: https://example.com/webhook
+        events:
+          - document.published
+          - version.created
+  ```
+</CodeGroup>
+
+<Callout kind="alert">Advanced configurations require careful testing to avoid breaking your documentation site.</Callout>
+
+## Configuration Management
+
+Manage your configurations effectively with version control and backup options.
+
+<Steps>
+  <Step title="Export Configuration" icon="download">
+    Export your current configuration as JSON or YAML for backup.
+  </Step>
+  <Step title="Version Control" icon="git-branch">
+    Track configuration changes over time.
+  </Step>
+  <Step title="Import Settings" icon="upload">
+    Import configurations from other projects or backups.
+  </Step>
+</Steps>
+
+## Best Practices
+
+Follow these best practices to maintain effective configurations.
+
+<ExpandableGroup>
+  <Expandable title="Regular Backups" default-open="false">
+    Regularly export your configurations to prevent data loss.
+  </Expandable>
+  <Expandable title="Environment Separation" default-open="false">
+    Use different configurations for development, staging, and production environments.
+  </Expandable>
+  <Expandable title="Team Communication" default-open="false">
+    Communicate configuration changes to your team to avoid confusion.
+  </Expandable>
+</ExpandableGroup>
+
+By properly configuring Wecurateatl, you can create a documentation environment that fits your team's workflow and enhances productivity. Start with basic settings and gradually explore advanced options as your needs grow.

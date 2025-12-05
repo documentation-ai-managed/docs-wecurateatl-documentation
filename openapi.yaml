@@ -1,0 +1,179 @@
+openapi: '3.0.0'
+info:
+  version: 1.0.0
+  title: Wecurateatl API
+  license:
+    name: MIT
+servers:
+  - url: https://api.wecurateatl.com/v1
+paths:
+  /projects:
+    get:
+      summary: Retrieve a list of documentation projects
+      operationId: listProjects
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum number of projects to return per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: A paginated list of documentation projects with metadata including project names, creation dates, and team member counts
+          headers:
+            x-next:
+              description: URL for the next page of results if more projects exist
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Projects'
+        default:
+          description: Unexpected error occurred while retrieving projects
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a new documentation project
+      operationId: createProject
+      responses:
+        201:
+          description: Project created successfully with initial configuration
+        default:
+          description: Unexpected error occurred during project creation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /projects/{projectId}:
+    get:
+      summary: Retrieve details of a specific documentation project
+      operationId: getProject
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          description: Unique identifier of the documentation project
+          schema:
+            type: string
+      responses:
+        200:
+          description: Detailed project information including settings, team members, and recent activity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Projects'
+        default:
+          description: Unexpected error occurred while retrieving project details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update an existing documentation project
+      operationId: updateProject
+      responses:
+        200:
+          description: Project updated successfully with new configuration
+        default:
+          description: Unexpected error occurred during project update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /documents:
+    get:
+      summary: Retrieve a list of documents across projects
+      operationId: listDocuments
+      parameters:
+        - name: projectId
+          in: query
+          description: Filter documents by specific project ID
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: A paginated list of documents with titles, authors, and modification timestamps
+          headers:
+            x-next:
+              description: URL for the next page of results if more documents exist
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Documents'
+        default:
+          description: Unexpected error occurred while retrieving documents
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a new document in a project
+      operationId: createDocument
+      responses:
+        201:
+          description: Document created successfully with initial content
+        default:
+          description: Unexpected error occurred during document creation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Project:
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    Projects:
+      type: array
+      items:
+        $ref: '#/components/schemas/Project'
+    Document:
+      required:
+        - id
+        - title
+        - projectId
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        projectId:
+          type: string
+        content:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+    Documents:
+      type: array
+      items:
+        $ref: '#/components/schemas/Document'
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

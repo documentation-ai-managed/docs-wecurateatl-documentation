@@ -1,0 +1,104 @@
+---
+title: Introduction
+description: Overview of Wecurateatl and its core capabilities
+---
+
+## Getting Started
+
+Wecurateatl is a comprehensive documentation management platform designed to help teams organize, collaborate, and publish their project documentation efficiently. It provides a centralized space where you can create, edit, and share documentation with your team and stakeholders. Whether you're building API docs, user guides, or internal knowledge bases, Wecurateatl streamlines the process with intuitive tools and powerful features.
+
+<Columns cols={3}>
+  <Card title="Quick Setup" icon="zap" href="#getting-started">
+    Get up and running in minutes with our guided setup process.
+  </Card>
+  <Card title="API Integration" icon="code" href="#api-reference">
+    Connect your documentation to external systems and APIs.
+  </Card>
+  <Card title="Team Collaboration" icon="users" href="#collaboration">
+    Work seamlessly with your team on documentation projects.
+  </Card>
+</Columns>
+
+## Core Features
+
+Wecurateatl offers a range of features to enhance your documentation workflow. You can create structured documentation with markdown support, version control for tracking changes, and role-based access to ensure the right people have the right permissions.
+
+<Tabs>
+  <Tab title="Markdown Support" icon="file-text">
+    Write documentation using standard markdown syntax with additional features like code highlighting and table support.
+    
+    <CodeGroup tabs="Markdown,HTML">
+      ```markdown
+      # Heading
+      
+      This is a paragraph with **bold** and *italic* text.
+      
+      | Feature | Description |
+      |---------|-------------|
+      | Code blocks | Syntax highlighting for multiple languages |
+      | Tables | Easy table creation with markdown |
+      ```
+      ```html
+      <h1>Heading</h1>
+      <p>This is a paragraph with <strong>bold</strong> and <em>italic</em> text.</p>
+      <table>
+        <tr><th>Feature</th><th>Description</th></tr>
+        <tr><td>Code blocks</td><td>Syntax highlighting</td></tr>
+      </table>
+      ```
+    </CodeGroup>
+  </Tab>
+  <Tab title="Version Control" icon="git-branch">
+    Track changes over time with built-in version control. Compare versions, revert changes, and maintain a history of your documentation.
+    
+    <Steps>
+      <Step title="Create Version" icon="plus">
+        Create a new version of your documentation project.
+        
+        ```bash
+        curl -X POST /api/projects/{id}/versions \
+          -H "Authorization: Bearer {API_KEY}" \
+          -d '{"name": "v1.1.0", "description": "New features added"}'
+        ```
+      </Step>
+      <Step title="Compare Versions" icon="arrow-right">
+        Compare two versions to see what changed.
+      </Step>
+      <Step title="Publish Version" icon="upload">
+        Publish the selected version to make it live.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+<Callout kind="info">Tip: Use our API to automate documentation updates from your CI/CD pipeline.</Callout>
+
+## Getting Help
+
+If you need assistance, our documentation includes comprehensive guides and a community forum where you can ask questions and share best practices.
+
+<ExpandableGroup>
+  <Expandable title="Frequently Asked Questions" default-open="false">
+    ### How do I invite team members?
+    Go to your project settings and use the "Invite Members" feature to add collaborators.
+    
+    ### Can I export my documentation?
+    Yes, you can export projects in PDF, HTML, or Markdown formats.
+    
+    ### Is there a free plan?
+    We offer a free tier with basic features for small teams.
+  </Expandable>
+  <Expandable title="Troubleshooting" default-open="false">
+    ### Authentication Issues
+    Ensure your API key is valid and has the necessary permissions.
+    
+    ### Upload Errors
+    Check file size limits and supported formats in our documentation.
+  </Expandable>
+</ExpandableGroup>
+
+## Next Steps
+
+Now that you have an overview of Wecurateatl, explore the authentication guide to set up access, or dive into configuration options to customize your workspace. For API integrations, check out our webhooks documentation to automate workflows.
+
+This platform empowers teams to maintain high-quality documentation that evolves with their projects. With features like real-time collaboration, version control, and API integrations, Wecurateatl ensures your documentation stays current and accessible.

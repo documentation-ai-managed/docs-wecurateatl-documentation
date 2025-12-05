@@ -1,0 +1,165 @@
+---
+title: Webhooks
+description: Set up and manage webhooks to automate workflows and integrate with external systems
+---
+
+## Webhooks Introduction
+
+Webhooks in Wecurateatl allow you to receive real-time notifications about events in your documentation projects. When specific events occur, such as document updates or version publishes, Wecurateatl sends HTTP POST requests to configured URLs. This enables you to automate workflows, trigger builds, or sync data with external systems.
+
+<Callout kind="info">Webhooks are essential for integrating Wecurateatl with CI/CD pipelines and notification systems.</Callout>
+
+## Setting Up Webhooks
+
+Creating webhooks is straightforward through the project settings interface. You can configure multiple webhooks with different event triggers and destinations.
+
+<Steps>
+  <Step title="Access Webhook Settings" icon="settings">
+    Navigate to your project settings and select the "Webhooks" tab.
+  </Step>
+  <Step title="Create New Webhook" icon="plus">
+    Click "Add Webhook" and enter the URL where notifications should be sent.
+    
+    ```json
+    {
+      "url": "https://api.example.com/webhooks/wecurateatl",
+      "secret": "your-webhook-secret",
+      "events": ["document.updated", "version.published"]
+    }
+    ```
+  </Step>
+  <Step title="Test Webhook" icon="check">
+    Send a test payload to verify your endpoint is receiving and processing notifications correctly.
+  </Step>
+</Steps>
+
+## Supported Events
+
+Wecurateatl supports a variety of events that can trigger webhook notifications. Each event includes relevant data in the payload.
+
+<Tabs>
+  <Tab title="Document Events" icon="file-text">
+    Events related to document creation, updates, and deletion.
+    
+    | Event | Description |
+    |-------|-------------|
+    | `document.created` | New document added to project |
+    | `document.updated` | Existing document modified |
+    | `document.deleted` | Document removed from project |
+  </Tab>
+  <Tab title="Version Events" icon="git-branch">
+    Events for version control operations.
+    
+    | Event | Description |
+    |-------|-------------|
+    | `version.created` | New version created |
+    | `version.published` | Version published live |
+    | `version.archived` | Version moved to archive |
+  </Tab>
+  <Tab title="Project Events" icon="folder">
+    Events affecting the entire project.
+    
+    | Event | Description |
+    |-------|-------------|
+    | `project.updated` | Project settings changed |
+    | `member.added` | New team member invited |
+    | `member.removed` | Team member access revoked |
+  </Tab>
+</Tabs>
+
+## Webhook Payloads
+
+Each webhook delivery includes a JSON payload with event details and metadata. The payload structure varies by event type but always includes standard fields.
+
+<CodeGroup tabs="Example Payload,Schema">
+  ```json
+  {
+    "event": "document.updated",
+    "timestamp": "2024-01-15T10:30:00Z",
+    "project": {
+      "id": "proj_123",
+      "name": "My Documentation Project"
+    },
+    "data": {
+      "documentId": "doc_456",
+      "title": "API Reference",
+      "author": "john.doe@example.com",
+      "changes": "Updated authentication section"
+    },
+    "signature": "sha256=abc123..."
+  }
+  ```
+  ```json
+  {
+    "type": "object",
+    "properties": {
+      "event": {"type": "string"},
+      "timestamp": {"type": "string", "format": "date-time"},
+      "project": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"}
+        }
+      },
+      "data": {"type": "object"},
+      "signature": {"type": "string"}
+    },
+    "required": ["event", "timestamp", "project", "data"]
+  }
+  ```
+</CodeGroup>
+
+<Callout kind="tip">Use the signature field to verify that webhook payloads are authentic and haven't been tampered with.</Callout>
+
+## Security and Best Practices
+
+Secure your webhooks to prevent unauthorized access and ensure reliable operation.
+
+<ExpandableGroup>
+  <Expandable title="Signature Verification" default-open="false">
+    Verify webhook signatures using your secret key to ensure authenticity.
+    
+    ```javascript
+    const crypto = require('crypto');
+    
+    function verifySignature(payload, signature, secret) {
+      const expectedSignature = crypto
+        .createHmac('sha256', secret)
+        .update(payload)
+        .digest('hex');
+      return `sha256=${expectedSignature}` === signature;
+    }
+    ```
+  </Expandable>
+  <Expandable title="Rate Limiting" default-open="false">
+    Implement rate limiting on your webhook endpoints to handle high-volume events.
+  </Expandable>
+  <Expandable title="Error Handling" default-open="false">
+    Return appropriate HTTP status codes (200 for success, 500 for errors) to prevent retries.
+  </Expandable>
+</ExpandableGroup>
+
+## Troubleshooting Webhooks
+
+Common issues and how to resolve them.
+
+<Expandable title="Failed Deliveries" default-open="false">
+  If webhooks aren't being delivered, check the URL, network connectivity, and SSL certificates.
+</Expandable>
+
+<Expandable title="Invalid Signatures" default-open="false">
+  Ensure you're using the correct secret key and signature verification algorithm.
+</Expandable>
+
+<Expandable title="Duplicate Events" default-open="false">
+  Implement idempotency in your webhook handlers to gracefully handle duplicate deliveries.
+</Expandable>
+
+## Advanced Webhook Features
+
+For complex integrations, explore advanced webhook capabilities.
+
+<Callout kind="success">Webhook filtering allows you to receive only events relevant to specific documents or users.</Callout>
+
+Webhooks are a powerful tool for keeping your systems in sync with Wecurateatl. By setting up webhooks correctly, you can automate documentation workflows and maintain real-time integration with your development and deployment processes.

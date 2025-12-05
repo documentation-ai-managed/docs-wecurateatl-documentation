@@ -1,0 +1,119 @@
+---
+title: Authentication
+description: Learn how to authenticate and secure access to Wecurateatl APIs and features
+---
+
+## Authentication Overview
+
+Authentication in Wecurateatl is essential for securing access to your documentation projects and ensuring that only authorized users can view or modify content. We support multiple authentication methods including API keys, OAuth, and team-based permissions to accommodate different use cases and security requirements.
+
+<Callout kind="info">API keys are required for programmatic access to Wecurateatl's REST API.</Callout>
+
+## API Key Authentication
+
+The primary method for authenticating API requests is through API keys. These keys are generated per project and can be scoped with different permissions.
+
+<Steps>
+  <Step title="Generate API Key" icon="key">
+    Navigate to your project settings and select "API Keys" to create a new key.
+    
+    <CodeGroup tabs="cURL,Python">
+      ```bash
+      curl -X POST /api/projects/{projectId}/keys \
+        -H "Authorization: Bearer {MASTER_KEY}" \
+        -d '{"name": "My API Key", "permissions": ["read", "write"]}'
+      ```
+      ```python
+      import requests
+      
+      response = requests.post(
+          '/api/projects/{projectId}/keys',
+          headers={'Authorization': f'Bearer {MASTER_KEY}'},
+          json={'name': 'My API Key', 'permissions': ['read', 'write']}
+      )
+      ```
+    </CodeGroup>
+  </Step>
+  <Step title="Use API Key" icon="send">
+    Include the API key in the Authorization header for all API requests.
+    
+    ```bash
+    curl -X GET /api/projects \
+      -H "Authorization: Bearer your-api-key-here"
+    ```
+  </Step>
+  <Step title="Manage Keys" icon="settings">
+    Regularly rotate keys and revoke compromised ones from the dashboard.
+  </Step>
+</Steps>
+
+## OAuth Integration
+
+For web applications, Wecurateatl supports OAuth 2.0 flows to authenticate users through popular identity providers like Google, GitHub, and Microsoft.
+
+<Tabs>
+  <Tab title="Google OAuth" icon="globe">
+    Configure Google OAuth in your project settings to allow users to sign in with their Google accounts.
+    
+    ```javascript
+    // Example client-side implementation
+    const authUrl = 'https://wecurateatl.com/oauth/google';
+    window.location.href = authUrl;
+    ```
+  </Tab>
+  <Tab title="GitHub OAuth" icon="github">
+    Integrate with GitHub for developers who prefer using their GitHub credentials.
+    
+    ```javascript
+    const authUrl = 'https://wecurateatl.com/oauth/github';
+    window.location.href = authUrl;
+    ```
+  </Tab>
+</Tabs>
+
+<Callout kind="alert">OAuth tokens expire after 1 hour. Implement token refresh logic in your application.</Callout>
+
+## Team Permissions
+
+Wecurateatl uses role-based access control (RBAC) to manage permissions within teams. Roles include Owner, Editor, and Viewer with escalating privileges.
+
+| Role | Permissions |
+|------|------------|
+| Owner | Full access, manage team, billing |
+| Editor | Create and edit documents, manage versions |
+| Viewer | Read-only access to published documents |
+
+<Expandable title="Permission Details" default-open="false">
+  ### Owner Permissions
+  Owners can invite members, change billing settings, and delete projects.
+  
+  ### Editor Permissions
+  Editors can create new documents, edit existing content, and publish versions.
+  
+  ### Viewer Permissions
+  Viewers can only access published documentation and cannot make changes.
+</Expandable>
+
+## Security Best Practices
+
+To maintain security, follow these recommendations when implementing authentication.
+
+<ExpandableGroup>
+  <Expandable title="Key Management" default-open="false">
+    Store API keys securely using environment variables or secret management systems. Never commit keys to version control.
+  </Expandable>
+  <Expandable title="Token Rotation" default-open="false">
+    Rotate API keys every 90 days and immediately revoke keys if compromised.
+  </Expandable>
+  <Expandable title="Rate Limiting" default-open="false">
+    Implement rate limiting in your applications to prevent abuse of the API.
+  </Expandable>
+</ExpandableGroup>
+
+## Troubleshooting Authentication Issues
+
+Common authentication problems and their solutions.
+
+<Callout kind="danger">If you receive a 401 Unauthorized error, check that your API key is valid and has the required permissions.</Callout>
+
+For more advanced authentication scenarios, including SSO integration, contact our support team. This ensures your documentation platform remains secure while providing seamless access to your team.
